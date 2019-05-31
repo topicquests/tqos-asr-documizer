@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<!-- Anticipatory Story Reader core properties
+	-->
+
+<properties>
+
+	<parameter name="MapDBpmcidsPath" value="/data/pmcids/pmcids" />
+	<parameter name="MapDBdidpmcidsPath" value = "/data/didpmcids/pmids" />
+	
+	<parameter name="ToReadName" value="pmidstoread" />
+
+	<!-- Used by JSONFileReader -->
+	<parameter name="JSONFileBase" value="/data/out/" />
+	
+	<parameter name="BaseDataPath" value="/data/" />
+	
+	<parameter name="MapDBpmidsPath" value="/data/pmids/pmids" />
+
+	<parameter name="WordDictionaryPath" value="/data/dictionary.json.gz" />
+
+	<parameter name="TopicProviderPath" value="/data/topics.txt" />
+
+	<parameter name="GraphProviderPath" value="/data/graph.txt" />
+
+	<parameter name="TripleProviderPath" value="/data/triples.txt" />
+
+	<parameter name="SentenceProviderPath" value="/data/sentences.txt" />
+	
+	<parameter name="DocumentProviderPath" value="/data/documents.txt" />
+	
+	<parameter name="OpenNLPModels" value="models/opennlp-models" />
+
+	<parameter name="GraphName" value="wordgrams" />
+	
+
+	<list name="Lenses">
+		<parameter name="CauseLens" value="org.topicquests.os.asr.reader.lens.CausalLens" /> 
+		<parameter name="BeliefLens" value="org.topicquests.os.asr.reader.lens.BeliefLens" /> 
+		<parameter name="BiographyLens" value="org.topicquests.os.asr.reader.lens.BiographyLens" /> 
+		<parameter name="ProcessLens" value="org.topicquests.os.asr.reader.lens.ProcessLens" /> 
+	</list>
+
+	<!-- Properties for ASR -->
+	<parameter name="MapDBreadSentencesPath" value="/data/readsentences" />
+	<parameter name="MapDBreadDocumentsPath" value="/data/readdocuments" />
+
+	
+</properties>
+

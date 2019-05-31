@@ -1,0 +1,12 @@
+/target/
+/data/
+DocumizerNotes.txt
+MultiGrams.txt
+idoc.json
+isent.json
+sample.json
+.classpath
+.project
+.settings
+.DS_Store
+/models/opennlp-models/.DS_Store

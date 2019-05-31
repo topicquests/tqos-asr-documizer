@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<!-- Anticipatory Story Reader core properties
+	-->
+
+<properties>
+
+	<parameter name="BootstrapPath" value="data/dsl/" />
+	
+</properties>
