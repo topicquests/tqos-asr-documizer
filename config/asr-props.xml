@@ -1,6 +1,13 @@
 <?xml version="1.0" ?>
-<!-- Anticipatory Story Reader core properties
-	-->
+<!-- 
+	Anticipatory Story Reader core properties
+	tqos-asr-documizer extends tqos-asr-core so these properties
+	serve far more than this agent
+	Most of the properties here are just for booting ASRCore
+	The primary properties used by this agent are:
+		JSONFileBase
+		BaseDataPath
+-->
 
 <properties>
 
@@ -9,6 +16,13 @@
 	
 	<parameter name="ToReadName" value="pmidstoread" />
 
+	<!-- Used by JSONFileReader
+		Put files in this directory to read
+		Files are *.gz of collections of json documents
+	-->
+	<parameter name="JSONFileBase" value="data/in/" />
+	
+	<parameter name="BaseDataPath" value="data/" />
 	<!-- Used by JSONFileReader -->
 	<parameter name="JSONFileBase" value="/data/out/" />
 	

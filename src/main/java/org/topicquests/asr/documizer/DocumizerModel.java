@@ -32,8 +32,7 @@ public class DocumizerModel extends ASRCoreModel implements IDocumizerModel {
 		SystemEnvironment tmEnv = new SystemEnvironment();
 		proxyModel = tmEnv.getProxyModel();
 		database = tmEnv.getDataProvider();
-		//documentProvider = env.getDocumentProvider();
-		//sentenceProvider = env.getSentenceProvider();
+
 		environment.logDebug("DocumizerModel- "+documentProvider);
 	}
 

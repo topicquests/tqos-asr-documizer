@@ -13,14 +13,21 @@ import org.topicquests.asr.documizer.DocumizerEnvironment;
 import org.topicquests.asr.documizer.api.IDocumizerModel;
 import org.topicquests.hyperbrane.ConcordanceDocument;
 import org.topicquests.hyperbrane.api.IDocument;
-import org.topicquests.hyperbrane.api.IHyperMembraneOntology;
+
 import org.topicquests.hyperbrane.api.IParagraph;
+
+import org.topicquests.hyperbrane.api.IHyperMembraneOntology;
+
 import org.topicquests.hyperbrane.api.IPublication;
+
 import org.topicquests.hyperbrane.api.ISentence;
 import org.topicquests.ks.TicketPojo;
 import org.topicquests.ks.api.ITQCoreOntology;
 import org.topicquests.ks.api.ITicket;
-//import org.topicquests.os.asr.JSONDocumentObject;
+
+import org.topicquests.os.asr.StatisticsHttpClient;
+import org.topicquests.os.asr.api.IStatisticsClient;
+import org.topicquests.os.asr.common.api.IASRFields;
 import org.topicquests.support.ResultPojo;
 import org.topicquests.support.api.IResult;
 import org.topicquests.util.PersistentSet;
@@ -36,6 +43,7 @@ import opennlp.tools.sentdetect.SentenceModel;
 public class JSONDocumentReader {
 	private DocumizerEnvironment environment;
 	private IDocumizerModel model;
+	private IStatisticsClient stats;
 	private SentenceDetectorME detector;
 	private ITicket credentials;
 	private final String DEFAULT_LANGUAGE = "en";
@@ -47,7 +55,7 @@ public class JSONDocumentReader {
 	public JSONDocumentReader(DocumizerEnvironment env, IDocumizerModel m) throws Exception {
 		environment = env;
 		model = m;
-
+		stats = environment.getTopicMapEnvironment().getStats();
 		credentials = new TicketPojo(ITQCoreOntology.SYSTEM_USER);
 		String modelPath = (String)environment.getProperties().get("OpenNLPModels");
 		modelPath += "/en-sent.bin";
@@ -73,7 +81,7 @@ public class JSONDocumentReader {
 		String lox = doc.getId();
 		String pmcid = doc.getPMCID();
 		if (pmcid != null) {
-			environment.getTopicMapEnvironment().getStats().addToKey("PMCID Count");
+			stats.addToKey("PMCID Count");
 		}
 		IResult r = model.getDocument(lox, credentials);
 		if (r.getResultObject() != null) {
@@ -88,7 +96,7 @@ public class JSONDocumentReader {
 			environment.logDebug("JSONDocumentReader.processJSON-2 "+doc.toJSONString());
 			//When this document is populated, save it
 			r = model.putDocument(doc);
-			environment.getStats().addDocument();
+			stats.addToKey(IASRFields.DOCS_IMPORTED);
 		}
 	}
 	
@@ -165,6 +173,7 @@ public class JSONDocumentReader {
 					result.addErrorString(r.getErrorString());
 				}
 				p.addSentence(sx);
+				stats.addToKey(IASRFields.SENTS_IMPORTED);
 			}
 		}
 		

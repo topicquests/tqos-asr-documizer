@@ -31,10 +31,10 @@ public class JSONFileReader {
 	private int cursor = 0;
 	private Worker thread;
 	private boolean isRunning = true;
+	//a simple text file listing all files already read
 	private final String FILES_READ = "FilesRead.txt";
 	private final String FILES_TO_READ;
 	private final String BASE_DATA_PATH;
-	private final String BASE_JSON_PATH;
 	
 
 	/**
@@ -47,7 +47,7 @@ public class JSONFileReader {
 		handler = new TextFileHandler();
 		filesRead = new HashSet<String>();
 		BASE_DATA_PATH = environment.getStringProperty("BaseDataPath");
-		BASE_JSON_PATH = environment.getStringProperty("JSONFileBase");
+
 	}
 	
 	/**
@@ -61,9 +61,9 @@ public class JSONFileReader {
 	public void startReading() {
 		initializeFilesRead();
 		String path = FILES_TO_READ;
-		File f = new File(path);
-		environment.logDebug("JSONFileReader.startReading-1 "+f);
-		fileNames = f.list();
+		File dir = new File(path);
+		environment.logDebug("JSONFileReader.startReading-1 "+dir);
+		fileNames = dir.list();
 		environment.logDebug("JSONFileReader.startReading-2 "+fileNames);
 		cursor = 0;
 		isRunning = true;
