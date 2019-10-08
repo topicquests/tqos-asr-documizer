@@ -5,9 +5,9 @@
  */
 package devtests;
 
-import org.topicquests.asr.documizer.DocumizerEnvironment;
-import org.topicquests.asr.documizer.api.IListener;
-import org.topicquests.asr.documizer.importer.JSONFileReader;
+import org.topicquests.os.asr.documizer.DocumizerEnvironment;
+import org.topicquests.os.asr.documizer.api.IListener;
+import org.topicquests.os.asr.documizer.importer.JSONFileReader;
 
 /**
  * @author jackpark

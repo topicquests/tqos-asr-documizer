@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 
 <properties>
-	<parameter name="DatabaseName" value = "tqos_database" />
+	<!-- DatabaseName must coordinate with the file asr-schema.sql -->
+	<parameter name="DatabaseName" value = "newdoctest" />
 	<parameter name="DatabaseSchema" value = "tqos_asr" />
 	<parameter name="ClientCacheSize" value = "8192" />
 

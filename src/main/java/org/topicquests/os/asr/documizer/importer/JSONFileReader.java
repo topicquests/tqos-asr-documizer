@@ -3,15 +3,15 @@
  *  This source code is available under the terms of the Affero General Public License v3.
  *  Please see LICENSE.txt for full license terms, including the availability of proprietary exceptions.
  */
-package org.topicquests.asr.documizer.importer;
+package org.topicquests.os.asr.documizer.importer;
 
 import java.util.*;
 import java.util.zip.GZIPInputStream;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-import org.topicquests.asr.documizer.DocumizerEnvironment;
-import org.topicquests.asr.documizer.api.IListener;
+import org.topicquests.os.asr.documizer.DocumizerEnvironment;
+import org.topicquests.os.asr.documizer.api.IListener;
 import org.topicquests.support.util.TextFileHandler;
 
 import net.minidev.json.JSONObject;
@@ -43,6 +43,7 @@ public class JSONFileReader {
 	public JSONFileReader(DocumizerEnvironment env, JSONDocumentReader rdr) {
 		environment = env;
 		FILES_TO_READ = environment.getStringProperty("JSONFileBase");
+		environment.logDebug("JSONFileReader.filesToRead "+FILES_TO_READ);
 		jsonDocReader = rdr;
 		handler = new TextFileHandler();
 		filesRead = new HashSet<String>();
@@ -62,20 +63,16 @@ public class JSONFileReader {
 		initializeFilesRead();
 		String path = FILES_TO_READ;
 		File dir = new File(path);
-		environment.logDebug("JSONFileReader.startReading-1 "+dir);
+		//environment.logDebug("JSONFileReader.startReading-1 "+dir);
 		fileNames = dir.list();
-		environment.logDebug("JSONFileReader.startReading-2 "+fileNames);
+		environment.logDebug("JSONFileReader.startReading "+fileNames.length);
 		cursor = 0;
 		isRunning = true;
 		thread = new Worker();
-		thread.start();	}
-	
-	void processDirectory(File dir) {
-		fileNames = dir.list();
-		String path = dir.getAbsolutePath();
-		
-		
+		thread.start();	
 	}
+	
+
 	public void stopReading() {
 		isRunning = false;
 	}
@@ -85,13 +82,26 @@ public class JSONFileReader {
 	 * @return
 	 */
 	File getNextFile() {
+		int nameLength = fileNames.length;
 		File f = null;
-		environment.logDebug("JSONFileReader.getNextFile "+cursor+" "+fileNames);
-		while (cursor < fileNames.length && !filesRead.contains(fileNames[cursor++])) {
-			String name = fileNames[--cursor];
-			System.out.println("JSONFileReader.getNexFile "+name);
-			f = new File(FILES_TO_READ+name);
+		String name;
+		while (cursor < nameLength) {
+			name = fileNames[cursor];
+			environment.logDebug("JSONFileReader.getNextFile-0 "+cursor+" "+name+" "+filesRead);
+			if (!filesRead.contains(name)) {
+				environment.logDebug("JSONFileReader.getNextFile-1 "+cursor+" "+name);
+				if (name.endsWith(".gz")) {
+					environment.logDebug("JSONFileReader.getNex1File-2 "+name);
+					f = new File(FILES_TO_READ+name);
+					environment.logDebug("JSONFileReader.getNexFile-3 "+f);
+					cursor++;
+					return f;
+				}
+			}
 			cursor++;
+			environment.logDebug("JSONFileReader.getNextFile-4 "+cursor);
+			if (cursor >= nameLength)
+				f = null;
 		}
 		return f;
 	}
@@ -101,9 +111,13 @@ public class JSONFileReader {
 		public void run() {
 			while(isRunning) {
 				File f = getNextFile();
+				environment.logDebug("Worker "+f);
+				while(f != null) {
+					processFile(f);
+					f = getNextFile();
+				}
 				if (f == null)
-					break; // done
-				processFile(f);
+					isRunning = false;
 			}
 			saveFilesRead();
 			host.did();
@@ -128,7 +142,7 @@ public class JSONFileReader {
 				environment.logError(e.getMessage(), e);
 			}
 		}
-		
+
 		/**
 		 * Convert <code>json</code> to a {@link JSONObject} and process it
 		 * @param json

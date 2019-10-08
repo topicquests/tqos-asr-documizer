@@ -3,7 +3,7 @@
  *  This source code is available under the terms of the Affero General Public License v3.
  *  Please see LICENSE.txt for full license terms, including the availability of proprietary exceptions.
  */
-package org.topicquests.asr.documizer;
+package org.topicquests.os.asr;
 
 import java.util.*;
 
@@ -13,6 +13,7 @@ import org.topicquests.hyperbrane.api.IDocument;
 import org.topicquests.ks.api.ITicket;
 import org.topicquests.os.asr.api.IASRConstants;
 import org.topicquests.os.asr.api.IDocumentProvider;
+import org.topicquests.os.asr.documizer.DocumizerEnvironment;
 import org.topicquests.support.api.IResult;
 
 import net.minidev.json.JSONObject;
@@ -31,6 +32,7 @@ public class DocumentProvider implements IDocumentProvider {
 	public DocumentProvider(DocumizerEnvironment env) {
 		environment = env;
 		documentDatabase = environment.getDocumentDatabase();
+		environment.logDebug("DocumentProvider+ "+documentDatabase);
 	}
 
 	/* (non-Javadoc)
@@ -50,7 +52,22 @@ public class DocumentProvider implements IDocumentProvider {
 	 */
 	@Override
 	public IResult putDocument(IDocument node) {
-		IResult result = documentDatabase.put(node.getId(), node.getData());
+		environment.logDebug("DocumentProvider.put-1 "+node.getData().toJSONString());
+		String label = node.getTitle();
+		if (label == null)
+			label  = node.getLabel("en");
+		if (label == null)
+			label = "";
+		IResult result = null;
+		if (!label.equals("")) {
+			// do a title search
+			result = documentDatabase.findByLabel(label);
+			environment.logDebug("DocumentProvider.put-2 "+result.getResultObject());
+		}
+		if (result == null || result.getResultObject() == null) {
+			environment.logDebug("DocumentProvider.put-2 "+node.getId()+" "+label);
+			result = documentDatabase.put(node.getId(), label, node.getData());
+		}
 		return result;
 	}
 

@@ -1,10 +1,10 @@
 /**
  * 
  */
-package org.topicquests.asr.documizer;
+package org.topicquests.os.asr.documizer;
 
-import org.topicquests.asr.documizer.api.IListener;
-import org.topicquests.asr.documizer.importer.JSONFileReader;
+import org.topicquests.os.asr.documizer.api.IListener;
+import org.topicquests.os.asr.documizer.importer.JSONFileReader;
 
 /**
  * @author jackpark

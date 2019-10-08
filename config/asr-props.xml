@@ -11,6 +11,13 @@
 
 <properties>
 
+	<!-- this server commmunicates with the Statistics Server -->
+	<parameter name="StatServerURl" value="localhost" /> <!--  coordinate with StatServer -->
+	<parameter name="StatServerPort" value="6900" /> <!-- coordinate with StatServer -->
+	<parameter name="StatServerClientId" value = "changeme" /> <!-- coordinate with StatServer -->
+
+	<parameter name="DatabaseSchema" value = "tqos_asr" />
+
 	<parameter name="MapDBpmcidsPath" value="/data/pmcids/pmcids" />
 	<parameter name="MapDBdidpmcidsPath" value = "/data/didpmcids/pmids" />
 	
@@ -21,12 +28,12 @@
 		Files are *.gz of collections of json documents
 	-->
 	<parameter name="JSONFileBase" value="data/in/" />
-	
+	<!-- Used by JSONFileReader -->
 	<parameter name="BaseDataPath" value="data/" />
 	<!-- Used by JSONFileReader -->
-	<parameter name="JSONFileBase" value="/data/out/" />
+	<!--<parameter name="JSONFileBase" value="/data/out/" />-->
 	
-	<parameter name="BaseDataPath" value="/data/" />
+	<!--<parameter name="BaseDataPath" value="/data/" />-->
 	
 	<parameter name="MapDBpmidsPath" value="/data/pmids/pmids" />
 

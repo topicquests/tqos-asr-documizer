@@ -5,7 +5,7 @@
  */
 package devtests;
 
-import org.topicquests.asr.documizer.DocumizerEnvironment;
+import org.topicquests.os.asr.documizer.DocumizerEnvironment;
 
 /**
  * @author jackpark

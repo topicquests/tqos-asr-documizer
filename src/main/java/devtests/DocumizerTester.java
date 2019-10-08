@@ -15,7 +15,8 @@ public class DocumizerTester {
 
 	public static void main(String[] args) {
 		//new BootTest();
-		new ImportTest();
+		//new ImportTest();
+		new JSONDocTest();
 
 	}
 
