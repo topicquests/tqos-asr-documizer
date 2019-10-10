@@ -58,14 +58,16 @@ public class DocumentProvider implements IDocumentProvider {
 			label  = node.getLabel("en");
 		if (label == null)
 			label = "";
+		environment.logDebug("DocumentProvider.put-2 "+label);
 		IResult result = null;
 		if (!label.equals("")) {
 			// do a title search
 			result = documentDatabase.findByLabel(label);
 			environment.logDebug("DocumentProvider.put-2 "+result.getResultObject());
 		}
-		if (result == null || result.getResultObject() == null) {
-			environment.logDebug("DocumentProvider.put-2 "+node.getId()+" "+label);
+		List<String> x = (List<String>)result.getResultObject();
+		if (x == null || x.isEmpty()) {
+			environment.logDebug("DocumentProvider.put-3 "+node.getId()+" "+label);
 			result = documentDatabase.put(node.getId(), label, node.getData());
 		}
 		return result;
